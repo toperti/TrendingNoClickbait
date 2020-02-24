@@ -30,9 +30,9 @@ def getTrending():
 
 	for item in getJson(auth)["items"]:
 		title = item["snippet"]["title"]
-		videoId = item["contentDetails"]["videoId"]
+		videoUrl = "https://www.youtube.com/watch?v=" + item["contentDetails"]["videoId"]
 		thumbnail = item["snippet"]["thumbnails"]["default"]["url"]
-		vidList.append((title, videoId, thumbnail))
+		vidList.append((title, videoUrl, thumbnail))
 
 	return vidList
 
