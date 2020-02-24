@@ -10,7 +10,7 @@ def getCreds(filename):
 		# Using read because creds file should only be one line long
 		return creds.read().strip()
 
-def getTrending(auth):
+def getJson(auth):
 	params = {"part": 'contentDetails, snippet',
 		"playlistId": 'PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-', 
 		"maxResults": 50,
@@ -23,6 +23,17 @@ def getTrending(auth):
 	jsonResult = json.loads(response.content)
 	return jsonResult
 
-if __name__ == '__main__':
+def getTrending():
 	auth = getCreds("creds.txt")
-	getTrending(auth)
+	
+	vidList = []
+
+	for item in getJson(auth)["items"]:
+		title = item["snippet"]["title"]
+		videoId = item["contentDetails"]["videoId"]
+		thumbnail = item["snippet"]["thumbnails"]["default"]["url"]
+		vidList.append((title, videoId, thumbnail))
+
+	return vidList
+
+	
