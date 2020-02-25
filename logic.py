@@ -6,7 +6,21 @@
 import requests
 import json
 
-# function gets API key from creds.txt file (see README.md for more info)
+# structure of the directory
+# /whatever
+# 	creds.txt
+# 	/app
+# 		logic.py
+# 		__init__.py
+# 		/templates
+# 			base.html
+# 			home.html
+# 		/static
+# 			/css 
+# 				main.css
+
+
+# function gets API key from creds.txt file
 def getCreds(filename):
 	with open(filename) as creds:
 		# Using read because creds file should only be one line long
