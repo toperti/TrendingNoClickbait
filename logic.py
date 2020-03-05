@@ -22,7 +22,7 @@ import json
 
 # function gets API key from creds.txt file
 def getCreds(filename):
-	with open(filename) as creds:
+	with open('app/' + filename) as creds:
 		# Using read because creds file should only be one line long
 		return creds.read().strip()
 
@@ -48,32 +48,23 @@ def getJson(auth):
 # title = the title of the video in str format
 # videoUrl = the URL of the video in str format
 # thumbnail = the URL to the default thumbnail for the video
-def getTrending():
-	auth = getCreds("../creds.txt")
-	with open('../app/blacklist_terms.txt') as bt:
-		blacklist_terms = bt.readlines()
-	with open('../app/blacklist_channels.txt') as bc:
-		blacklist_channels = bc.readlines()
+def getTrending(terms):
+	
+	print(terms)
+
+	auth = getCreds("creds.txt")
 	
 	vidList = []
 
 	for item in getJson(auth)["items"]:
-		add = True
 		title = item["snippet"]["title"]
+		if len([word for word in title.split() if word.strip() in terms]):
+			continue
+
 		videoUrl = "https://www.youtube.com/watch?v=" + item["contentDetails"]["videoId"]
 		thumbnail = item["snippet"]["thumbnails"]["default"]["url"]
-		for term in blacklist_terms:
-			if term in title:
-				add = False
-		if(add):
-			vidList.append((title, videoUrl, thumbnail))
+		vidList.append((title, videoUrl, thumbnail))
 
 	return vidList
 
-def blacklist_terms(term):
-	with open('../app/blacklist_terms.txt') as bc:
-		bc.writelines(term)
-
-def blacklist_channels(channels):
-	with open('../app/blacklist_channels.txt') as bt:
-		bt.writelines(channels)
+	
